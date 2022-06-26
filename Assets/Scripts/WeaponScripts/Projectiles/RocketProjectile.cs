@@ -1,4 +1,5 @@
-﻿using CommonScripts;
+﻿using System.Threading.Tasks;
+using CommonScripts;
 using WeaponScripts.ProjectilePool;
 
 namespace WeaponScripts.Projectiles
@@ -28,11 +29,17 @@ namespace WeaponScripts.Projectiles
      
          private void Update()
          {
-             transform.Translate(Vector3.forward * _data.Speed * Time.deltaTime);
+             if(!_explosion.isPlaying)
+                transform.Translate(Vector3.forward * _data.Speed * Time.deltaTime);
              _lifeTime -= Time.deltaTime;
+             if (_lifeTime <= 2f)
+             {
+                 Explosion();
+             }
+
              if (_lifeTime <= float.Epsilon)
              {
-                 _pool.Push(this);
+                 PushRocketToPool();
              }
          }
 
@@ -40,13 +47,27 @@ namespace WeaponScripts.Projectiles
          {
              Collide(other);
          }
-     
-         private void ExplodeAndDestroy(Collider other)
+
+         private void Explosion()
          {
+             _explosion.gameObject.SetActive(true);
              _explosion.Play();
              _explodePhysics.Explode(transform, 1400f);
-             TryDestroyGameObject(other.gameObject, other.tag);
+         }
+
+         private void PushRocketToPool()
+         {
+             _lifeTime = _data.LifeTime;
              _pool.Push(this);
+         }
+     
+         private async void ExplodeAndDestroy(Collider other)
+         {
+             Explosion();
+             TryDestroyGameObject(other.gameObject, other.tag);
+             await Task.Delay(1000);
+             if(!_pool.CheckContainsInPool(this))
+                _pool.Push(this);
          }
      
          private void TryDestroyGameObject(GameObject gObject, string tag)
@@ -59,7 +80,8 @@ namespace WeaponScripts.Projectiles
      
          public override void Collide(Collider other)
          {
-             _explosion.gameObject.SetActive(true);
+             if (other.CompareTag("Player"))
+                 return;
              ExplodeAndDestroy(other);
          }
      }

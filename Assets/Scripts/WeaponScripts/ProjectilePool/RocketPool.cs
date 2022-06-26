@@ -74,5 +74,10 @@ namespace WeaponScripts.ProjectilePool
                 Debug.LogError("BulletPool.Push: error: already has this rocket");
             }
         }
+
+        public bool CheckContainsInPool(RocketProjectile rocket)
+        {
+            return _bullets.Contains(rocket);
+        }
     }
 }

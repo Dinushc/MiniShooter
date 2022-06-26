@@ -43,7 +43,7 @@ namespace WeaponScripts.Projectiles
         {
             if (collider.CompareTag("Player"))
             {
-                //collider.attachedRigidbody.AddForce();
+                collider.attachedRigidbody.AddForce(Vector3.forward * -50, ForceMode.Impulse);
             }
             _pool.Push(this);
         }

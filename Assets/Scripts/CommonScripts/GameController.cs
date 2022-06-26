@@ -28,8 +28,8 @@ namespace CommonScripts
 
         private void ReloadScene()
         {
-            SceneManager.LoadSceneAsync(0);
             Destroy(ServiceLocator.GetController<RocketPool>().gameObject);
+            SceneManager.LoadSceneAsync(0);
             ServiceLocator.Clear();
         }
     }
