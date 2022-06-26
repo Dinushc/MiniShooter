@@ -50,7 +50,6 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\InputReceiver.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CommonScripts\GameController.cs" />
      <Compile Include="Assets\Scripts\CommonScripts\ServiceLocator.cs" />
