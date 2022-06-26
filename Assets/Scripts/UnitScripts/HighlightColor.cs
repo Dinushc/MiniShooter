@@ -9,7 +9,7 @@ namespace UnitScripts
 
         private void OnMouseEnter()
         {
-            _meshRenderer.material.color = Color.green;
+            _meshRenderer.material.color = Color.yellow;
         }
 
         private void OnMouseExit()

@@ -6,12 +6,18 @@ namespace UnitScripts
 {
     public class DetectGameEnd : MonoBehaviour
     {
-        [SerializeField] private GameController _gameController;
+        private GameController _gameController;
         private bool _failed = false;
-        
-        private void OnCollisionEnter(Collision other)
+
+
+        private void Start()
         {
-            if (other.collider.CompareTag("Finish"))
+            _gameController = ServiceLocator.GetController<GameController>();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Finish"))
             {
                 StartCoroutine(_gameController.WaitAndRestart(true));
             }

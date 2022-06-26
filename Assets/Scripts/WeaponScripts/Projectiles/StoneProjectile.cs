@@ -11,6 +11,8 @@ namespace WeaponScripts.Projectiles
         private ProjectileData _data;
         private StonePool _pool;
         private float _lifeTime;
+        private const string PlayerTag = "Player";
+        private Vector3 _firstPosition = Vector3.zero;
 
         private void Start()
         {
@@ -25,6 +27,10 @@ namespace WeaponScripts.Projectiles
         
         private void Update()
         {
+            if (_firstPosition == Vector3.zero)
+            {
+                _firstPosition = transform.position;
+            }
             transform.Translate(Vector3.forward * _data.Speed * Time.deltaTime);
             _lifeTime -= Time.deltaTime;
             if (_lifeTime <= float.Epsilon)
@@ -41,9 +47,10 @@ namespace WeaponScripts.Projectiles
         
         public override void Collide(Collider collider)
         {
-            if (collider.CompareTag("Player"))
+            if (collider.CompareTag(PlayerTag))
             {
-                collider.attachedRigidbody.AddForce(Vector3.forward * -50, ForceMode.Impulse);
+                var velocity = _firstPosition - collider.transform.position;
+                collider.attachedRigidbody.AddForce(velocity * -5, ForceMode.Impulse);
             }
             _pool.Push(this);
         }

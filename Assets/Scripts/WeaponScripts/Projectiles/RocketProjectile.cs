@@ -66,8 +66,11 @@ namespace WeaponScripts.Projectiles
              Explosion();
              TryDestroyGameObject(other.gameObject, other.tag);
              await Task.Delay(1000);
-             if(!_pool.CheckContainsInPool(this))
-                _pool.Push(this);
+             if (this != null)
+             {
+                 if(!_pool.CheckContainsInPool(this))
+                     _pool.Push(this);   
+             }
          }
      
          private void TryDestroyGameObject(GameObject gObject, string tag)

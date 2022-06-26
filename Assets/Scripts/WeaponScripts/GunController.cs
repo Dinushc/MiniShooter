@@ -12,10 +12,10 @@ namespace WeaponScripts
         [SerializeField] private Light _muzzleFlashLight;
         [SerializeField] private Transform _playerCamera;
         [SerializeField] private Transform _gun;
-        [SerializeField] private Transform _target;
         [SerializeField] private bool _isMine;
 
         private ProjectileDestination _destination;
+        private Transform _target;
         private RocketPool _rocketPool;
         private StonePool _stonePool;
         private float _timer;
@@ -80,6 +80,7 @@ namespace WeaponScripts
 
         private void BotFireLogic()
         {
+            TrySetTarget();
             if (_timer > 1f)
             {
                 var stone = (StoneProjectile) GetCreatedBullet(!_isMine);
@@ -90,6 +91,14 @@ namespace WeaponScripts
 
             _timer += Time.deltaTime;
             _gun.LookAt(_target);
+        }
+
+        private void TrySetTarget()
+        {
+            if (_target == null)
+            {
+                _target = ServiceLocator.GetController<UnitsHolder>().GetPlayerTransform();
+            }
         }
     }
 }

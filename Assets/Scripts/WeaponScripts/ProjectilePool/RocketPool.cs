@@ -13,7 +13,7 @@ namespace WeaponScripts.ProjectilePool
     {
         [SerializeField] private int _startCount = 0;
         private ProjectileCreator _creator;
-        private LinkedList<RocketProjectile> _bullets;
+        private LinkedList<RocketProjectile> _rockets;
 
         private void Awake()
         {
@@ -23,7 +23,7 @@ namespace WeaponScripts.ProjectilePool
         void Start()
         {
             _creator = GetComponent<ProjectileCreator>();
-            _bullets = new LinkedList<RocketProjectile>();
+            _rockets = new LinkedList<RocketProjectile>();
             StartCoroutine(WaitNextTick());
         }
 
@@ -45,29 +45,23 @@ namespace WeaponScripts.ProjectilePool
 
         public BaseProjectile Pop()
         {
-            if (_bullets.Count == 0)
+            if (_rockets.Count == 0)
             {
-                Debug.Log("pusto???");
                 CreateProjectile();
             }
-            RocketProjectile result = _bullets.First.Value;
-            if (_bullets.First.Equals(_bullets.Last))
-            {
-                Debug.Log("Detect");
-            }
+            RocketProjectile result = _rockets.First.Value;
             result.gameObject.SetActive(true);
-            _bullets.RemoveFirst();
-            Debug.Log("pipitka: " + result);
+            _rockets.RemoveFirst();
             return result;
         }
 
         public void Push(BaseProjectile rocketProjectile)
         {
             var rocket = (RocketProjectile) rocketProjectile;
-            if (!_bullets.Contains(rocket))
+            if (!_rockets.Contains(rocket))
             {
                 rocket.gameObject.SetActive(false);
-                _bullets.AddLast(rocket);
+                _rockets.AddLast(rocket);
             }
             else
             {
@@ -77,7 +71,7 @@ namespace WeaponScripts.ProjectilePool
 
         public bool CheckContainsInPool(RocketProjectile rocket)
         {
-            return _bullets.Contains(rocket);
+            return _rockets.Contains(rocket);
         }
     }
 }

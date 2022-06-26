@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,11 @@ namespace CommonScripts
     {
         [SerializeField] private GameObject _gameOverPanel;
         [SerializeField] private TextMeshProUGUI _gameOverText;
+
+        private void Awake()
+        {
+            ServiceLocator.RegisterController(this);
+        }
 
         public IEnumerator WaitAndRestart(bool won)
         {
@@ -28,9 +34,13 @@ namespace CommonScripts
 
         private void ReloadScene()
         {
-            Destroy(ServiceLocator.GetController<RocketPool>().gameObject);
-            SceneManager.LoadSceneAsync(0);
+            SceneManager.LoadSceneAsync("SampleScene");
+        }
+
+        private void OnDestroy()
+        {
             ServiceLocator.Clear();
+            Destroy(gameObject);
         }
     }
 }

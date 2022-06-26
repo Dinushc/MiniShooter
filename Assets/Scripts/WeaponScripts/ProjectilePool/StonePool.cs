@@ -12,7 +12,7 @@ namespace WeaponScripts.ProjectilePool
     {
         [SerializeField] private int _startCount = 0;
         private ProjectileCreator _creator;
-        private LinkedList<StoneProjectile> _bullets;
+        private LinkedList<StoneProjectile> _stones;
 
         private void Awake()
         {
@@ -22,7 +22,7 @@ namespace WeaponScripts.ProjectilePool
         void Start()
         {
             _creator = GetComponent<ProjectileCreator>();
-            _bullets = new LinkedList<StoneProjectile>();
+            _stones = new LinkedList<StoneProjectile>();
             StartCoroutine(WaitNextTick());
         }
 
@@ -44,25 +44,23 @@ namespace WeaponScripts.ProjectilePool
 
         public BaseProjectile Pop()
         {
-            if (_bullets.Count == 0)
+            if (_stones.Count == 0)
             {
-                
-                Debug.Log("pusto???");
                 CreateProjectile();
             }
-            StoneProjectile result = _bullets.First.Value;
+            StoneProjectile result = _stones.First.Value;
             result.gameObject.SetActive(true);
-            _bullets.RemoveFirst();
+            _stones.RemoveFirst();
             return result;
         }
 
         public void Push(BaseProjectile stoneProjectile)
         {
-            var rocket = stoneProjectile as StoneProjectile;
-            if (!_bullets.Contains(rocket))
+            var stone = (StoneProjectile) stoneProjectile;
+            if (!_stones.Contains(stone))
             {
-                rocket?.gameObject.SetActive(false);
-                _bullets.AddLast(rocket);
+                stone.gameObject.SetActive(false);
+                _stones.AddLast(stone);
             }
             else
             {
