@@ -43,7 +43,7 @@ namespace WeaponScripts
         public BaseProjectile CreateProjectileToPool(ProjectileType type)
         {
             GameObject prefab = InnerCreator(type);
-            GameObject projectile = Instantiate(prefab);
+            GameObject projectile = Instantiate(prefab, transform);
             BaseProjectile result = projectile.GetComponent<BaseProjectile>();
             result.SetProjectileData(Projectiles[type]);
             return result;

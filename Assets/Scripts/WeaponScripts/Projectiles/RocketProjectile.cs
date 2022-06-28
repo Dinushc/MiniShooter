@@ -29,8 +29,11 @@ namespace WeaponScripts.Projectiles
      
          private void Update()
          {
-             if(!_explosion.isPlaying)
-                transform.Translate(Vector3.forward * _data.Speed * Time.deltaTime);
+             if (!_explosion.isPlaying)
+             {
+                 transform.Translate(Vector3.forward * _data.Speed * Time.deltaTime);
+                 transform.Rotate(Vector3.forward * 300 * Time.deltaTime);
+             }
              _lifeTime -= Time.deltaTime;
              if (_lifeTime <= 2f)
              {
