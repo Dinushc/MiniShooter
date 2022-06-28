@@ -83,7 +83,7 @@ namespace WeaponScripts.Projectiles
      
          public override void Collide(Collider other)
          {
-             if (other.CompareTag("Player"))
+             if (other.CompareTag("Player") || other.CompareTag("Board"))
                  return;
              ExplodeAndDestroy(other);
          }
