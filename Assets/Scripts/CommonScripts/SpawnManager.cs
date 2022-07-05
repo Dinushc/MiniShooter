@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace CommonScripts
 {
@@ -11,7 +13,7 @@ namespace CommonScripts
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _activeEnemyPrefab;
         [SerializeField] private GameObject _passiveEnemyPrefab;
-        [SerializeField] private List<Transform> _spawnPositions;
+        [SerializeField] private SpawnPlaceHolder _spawnPositions;
         [SerializeField] private Transform _playerSpawnPosition;
         private List<GameObject> _spawnedCharacters = new List<GameObject>();
             
@@ -32,7 +34,12 @@ namespace CommonScripts
         {
             int i = 0;
             var enemyPrefab = _activeEnemyPrefab;
-            foreach (var place in _spawnPositions)
+            var spawnPlaces = _spawnPositions.SpawnPlaces;
+            if (spawnPlaces.Count <= 0)
+            {
+                throw new InvalidDataContractException(nameof(spawnPlaces.Count));
+            }
+                foreach (var place in spawnPlaces)
             {
                 enemyPrefab = (i % 2 == 0) ? _activeEnemyPrefab : _passiveEnemyPrefab;
                 var enemy = Instantiate(enemyPrefab, place.position, Quaternion.identity);
